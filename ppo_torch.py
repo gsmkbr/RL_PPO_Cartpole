@@ -133,7 +133,7 @@ class Agent:
         self.critic.load_checkpoint()
 
     def choose_action(self, observation):
-        state = T.tensor(observation[0].reshape(1, 4), dtype=T.float).to(self.actor.device)
+        state = T.tensor(observation.reshape(1, 4), dtype=T.float).to(self.actor.device)
         #state = T.tensor([observation], dtype=T.float).to(self.actor.device)
 
         dist = self.actor(state)

@@ -24,7 +24,7 @@ if __name__ == '__main__':
     n_steps = 0
 
     for i in range(n_games):
-        observation = env.reset()
+        observation = env.reset()[0]
         done = False
         score = 0
         while not done:
@@ -36,7 +36,7 @@ if __name__ == '__main__':
             if n_steps % N == 0:
                 agent.learn()
                 learn_iters += 1
-            observation = (observation_, {})
+            observation = observation_
 
         score_history.append(score)
         avg_score = np.mean(score_history[-100:])
