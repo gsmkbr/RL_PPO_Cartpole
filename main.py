@@ -2,16 +2,17 @@ import gym
 import numpy as np
 from ppo_torch import Agent
 from utils import plot_learning_curve
+IS_PRETRAINED = True
 
 if __name__ == '__main__':
-    env = gym.make('CartPole-v0')
+    env = gym.make('CartPole-v0', render_mode="human")
     N = 20
     batch_size = 5
     n_epochs = 4
     alpha = 0.0003
     agent = Agent(n_actions=env.action_space.n, batch_size=batch_size, 
                     alpha=alpha, n_epochs=n_epochs, 
-                    input_dims=env.observation_space.shape)
+                    input_dims=env.observation_space.shape, is_pretrained=IS_PRETRAINED)
     n_games = 300
 
     figure_file = 'plots/cartpole.png'
