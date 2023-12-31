@@ -109,7 +109,7 @@ class CriticNetwork(nn.Module):
 
 class Agent:
     def __init__(self, n_actions, input_dims, gamma=0.99, alpha=0.0003, gae_lambda=0.95,
-            policy_clip=0.2, batch_size=64, n_epochs=10):
+            policy_clip=0.2, batch_size=64, n_epochs=10, is_pretrained=False):
         self.gamma = gamma
         self.policy_clip = policy_clip
         self.n_epochs = n_epochs
@@ -117,6 +117,9 @@ class Agent:
 
         self.actor = ActorNetwork(n_actions, input_dims, alpha)
         self.critic = CriticNetwork(input_dims, alpha)
+        if is_pretrained:
+            self.load_models()
+
         self.memory = PPOMemory(batch_size)
        
     def remember(self, state, action, probs, vals, reward, done):
@@ -158,6 +161,8 @@ class Agent:
             for t in range(len(reward_arr)-1):
                 discount = 1
                 a_t = 0
+                # Why the loop iterates over all samples,
+                # In some situations, there is end of episode within the samples
                 for k in range(t, len(reward_arr)-1):
                     a_t += discount*(reward_arr[k] + self.gamma*values[k+1]*\
                             (1-int(dones_arr[k])) - values[k])
